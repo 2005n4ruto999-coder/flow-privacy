@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flow · الجديد / What's new</title>
+<style>
+  :root { --bg: #0f1115; --card: #161921; --fg: #eceef2; --sub: #a3a9b6; --line: #262a33; --accent: #6ea0ff;
+          --new: #3ddc97; --better: #6ea0ff; --fixed: #ffb454; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.7 system-ui, "Segoe UI", Tahoma, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 28px 16px 64px; }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+  h1 { font-size: 1.7rem; margin: 0; }
+  .intro { color: var(--sub); margin: 0 0 24px; }
+  button { background: var(--card); color: var(--fg); border: 1px solid var(--line); border-radius: 999px;
+           padding: 6px 14px; font: inherit; cursor: pointer; }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .rel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin: 0 0 18px; }
+  .rel h2 { font-size: 1.15rem; margin: 0 0 10px; color: var(--accent); }
+  .rel h2 span { color: var(--sub); font-weight: 400; font-size: .95rem; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { display: flex; gap: 10px; align-items: baseline; padding: 6px 0; border-top: 1px solid var(--line); }
+  li:first-child { border-top: 0; }
+  .tag { flex: none; font-size: .7rem; font-weight: 700; letter-spacing: .04em; padding: 1px 8px; border-radius: 6px;
+         min-width: 58px; text-align: center; }
+  .NEW { color: var(--new); background: color-mix(in srgb, var(--new) 15%, transparent); }
+  .BETTER { color: var(--better); background: color-mix(in srgb, var(--better) 15%, transparent); }
+  .FIXED { color: var(--fixed); background: color-mix(in srgb, var(--fixed) 15%, transparent); }
+  footer { color: var(--sub); font-size: .9rem; margin-top: 32px; }
+  a { color: var(--accent); }
+  html[lang="en"] .ar, html[lang="ar"] .en { display: none; }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1><span class="ar">الجديد في Flow</span><span class="en">What's new in Flow</span></h1>
+  <button id="sw" type="button">English</button>
+</header>
+<p class="intro">
+  <span class="ar">مشغّل موسيقى بدون إنترنت، بالعربي أولًا و16 لغة. هنا كل تحديث وش فيه.</span>
+  <span class="en">An offline music player, Arabic-first in 16 languages. Every update, at a glance.</span>
+</p>
+<div id="list"></div>
+<footer>
+  <a href="../privacy.html"><span class="ar">سياسة الخصوصية</span><span class="en">Privacy policy</span></a>
+</footer>
+</main>
+<script>
+// Each item: [tag, Arabic, English]. Free-now items count as NEW.
+const RELEASES = [
+  { v: "1.2", build: 15, date: { ar: "قريبًا", en: "Coming soon" }, items: [
+    ["NEW", "Liquid Glass حقيقي: ضبابية خلف الأشرطة، وعدسة تكسر الضوء، وارتداد ناعم.", "Real Liquid Glass: blur behind the bars, a light-bending lens and soft bounce."],
+    ["NEW", "شريط تنقّل زجاجي عائم (فوق أو تحت) تسحب كبسولته بين الأقسام.", "A floating glass tab bar (top or bottom) with a capsule you can drag."],
+    ["NEW", "البحث كرة أو شريط، فوق أو تحت، ويتحرك مع التمرير.", "Search as a ball or a bar, top or bottom, moving as you scroll."],
+    ["NEW", "تحديد أغاني كثيرة مرة وحدة: أضف لقائمة، شارك، أو احذف.", "Select many songs at once: add to a playlist, share or delete."],
+    ["NEW", "10 ثيمات جديدة منها ليالي ميامي، ومعاينة حيّة لكل ثيم في صفحة خاصة.", "10 new themes including Miami Nights, with a live preview on their own page."],
+    ["NEW", "حركة تغيير الأغنية حسب الثيم، واسحب الغلاف لتغيير الأغنية.", "Song-change motion that follows the theme, and swipe the cover to change song."],
+    ["NEW", "مجاني الآن: الأسطوانة الدوّارة في الويدجت.", "Now free: the spinning record on the widget."],
+    ["BETTER", "مؤشر تمرير سريع على حافة القوائم الطويلة.", "A fast-scroll handle on the edge of long lists."],
+    ["FIXED", "اللغات الـ16 كلها تشتغل من نسخة المتجر.", "All 16 languages now work in the store version."],
+    ["FIXED", "خلفية الويدجت، والإغلاق الكامل لما تسحب التطبيق من التطبيقات الأخيرة.", "Widget background, and a full stop when you swipe the app away from Recents."]
+  ]},
+  { v: "1.1", build: 14, date: { ar: "نوفمبر 2026", en: "November 2026" }, items: [
+    ["NEW", "ستة أشكال للغلاف، أبرزها «غلاف كامل» يغطي الشاشة ويتلاشى.", "Six cover styles, led by a full-screen cover that fades out."],
+    ["NEW", "أزرار تشغيل زجاجية وبطاقة كلمات زجاجية.", "Glass playback buttons and a glass lyrics card."],
+    ["NEW", "شرح تفاعلي أول مرة، وصفحة «وين أغانيي؟» مع زر إعادة الفحص.", "A first-run guided tour, and a “Where are my songs?” page with a rescan button."],
+    ["NEW", "تنبيه داخل التطبيق لما يكون فيه تحديث، وقائمة «الجديد في هذا التحديث».", "In-app update prompt and a “What's new” list."],
+    ["NEW", "مجاني الآن: ثيمات فضاء وغروب الشمس، وTinted وLiquid Glass، وساعات الاستماع.", "Now free: Space and Sunset themes, Tinted and Liquid Glass, and listening hours."],
+    ["BETTER", "إعدادات الويدجت تنضبط أي وقت، والضغط على اسم الأغنية يفتح التطبيق.", "Widget settings any time, and tapping the song name opens the app."],
+    ["BETTER", "خيار أزرار الشريط السفلي موجود مع كل الثيمات.", "Bottom-bar buttons option works with every theme."],
+    ["FIXED", "تغيير اللغة يتطبّق فورًا ويرجعك لنفس الصفحة.", "Changing language applies at once and keeps you on the same page."],
+    ["FIXED", "لوحة الأدوات ما تنفتح بالغلط وما تعلق.", "The tools panel no longer opens by mistake or gets stuck."]
+  ]},
+  { v: "1.0", build: null, date: { ar: "الإطلاق", en: "Launch" }, items: [
+    ["NEW", "أول إصدار: مكتبتك من الأغاني والفيديو على جهازك، بدون إنترنت ولا تتبّع ولا إعلانات.", "First release: your on-device songs and videos, no internet, no tracking, no ads."],
+    ["NEW", "قوائم تشغيل، ومفضلة، وكلمات، وإكوالايزر، وويدجت، وثيمات.", "Playlists, favorites, lyrics, equalizer, widget and themes."],
+    ["NEW", "عربي أولًا مع 16 لغة.", "Arabic-first, in 16 languages."]
+  ]}
+];
+const TAG = { NEW: { ar: "جديد", en: "NEW" }, BETTER: { ar: "أفضل", en: "BETTER" }, FIXED: { ar: "إصلاح", en: "FIXED" } };
+const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+function render(lang) {
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.getElementById("sw").textContent = lang === "ar" ? "English" : "العربية";
+  const i = lang === "ar" ? 1 : 2, b = lang === "ar" ? "بناء" : "build";
+  document.getElementById("list").innerHTML = RELEASES.map(r =>
+    `<section class="rel"><h2>v${r.v} <span>${r.build ? `· ${b} ${r.build} ` : ""}· ${r.date[lang]}</span></h2><ul>` +
+    r.items.map(it => `<li><span class="tag ${it[0]}">${TAG[it[0]][lang]}</span><span>${esc(it[i])}</span></li>`).join("") +
+    `</ul></section>`).join("");
+}
+let lang = new URLSearchParams(location.search).get("lang") === "en" ? "en" : "ar";
+document.getElementById("sw").onclick = () => render(lang = lang === "ar" ? "en" : "ar");
+render(lang);
+</script>
+</body>
+</html>
