@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,6 +27,13 @@
   .NEW { color: var(--new); background: color-mix(in srgb, var(--new) 15%, transparent); }
   .BETTER { color: var(--better); background: color-mix(in srgb, var(--better) 15%, transparent); }
   .FIXED { color: var(--fixed); background: color-mix(in srgb, var(--fixed) 15%, transparent); }
+  #sw { display: flex; align-items: center; gap: 6px; }
+  .lm { position: relative; }
+  #menu { position: absolute; inset-inline-end: 0; top: 110%; z-index: 9; background: var(--card); border: 1px solid var(--line);
+          border-radius: 12px; padding: 4px; min-width: 170px; max-height: 70vh; overflow: auto; }
+  #menu li { border: 0; padding: 0; }
+  #menu a { display: block; width: 100%; padding: 6px 10px; border-radius: 8px; color: var(--fg); text-decoration: none; }
+  #menu a:hover, #menu a:focus-visible { background: var(--line); }
   footer { color: var(--sub); font-size: .9rem; margin-top: 32px; }
   a { color: var(--accent); }
   html[lang="en"] .ar, html[lang="ar"] .en { display: none; }
@@ -36,7 +43,13 @@
 <main>
 <header>
   <h1><span class="ar">الجديد في Flow</span><span class="en">What's new in Flow</span></h1>
-  <button id="sw" type="button">English</button>
+  <div class="lm">
+    <button id="sw" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Language">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0014.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>
+      <span id="cur">English</span>
+    </button>
+    <ul id="menu" hidden></ul>
+  </div>
 </header>
 <p class="intro">
   <span class="ar">مشغّل موسيقى بدون إنترنت، بالعربي أولًا و16 لغة. هنا كل تحديث وش فيه.</span>
@@ -84,15 +97,29 @@ const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&g
 function render(lang) {
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-  document.getElementById("sw").textContent = lang === "ar" ? "English" : "العربية";
+  document.getElementById("cur").textContent = lang === "ar" ? "العربية" : "English";
   const i = lang === "ar" ? 1 : 2, b = lang === "ar" ? "بناء" : "build";
   document.getElementById("list").innerHTML = RELEASES.map(r =>
     `<section class="rel"><h2>v${r.v} <span>${r.build ? `· ${b} ${r.build} ` : ""}· ${r.date[lang]}</span></h2><ul>` +
     r.items.map(it => `<li><span class="tag ${it[0]}">${TAG[it[0]][lang]}</span><span>${esc(it[i])}</span></li>`).join("") +
     `</ul></section>`).join("");
 }
-let lang = new URLSearchParams(location.search).get("lang") === "en" ? "en" : "ar";
-document.getElementById("sw").onclick = () => render(lang = lang === "ar" ? "en" : "ar");
+// The app's 16 languages. Arabic and English are written by hand; the rest open a machine translation of the English page.
+const LANGS = [["en","English"],["ar","العربية"],["de","Deutsch"],["es","Español"],["fa","فارسی"],["fr","Français"],["hi","हिन्दी"],
+  ["id","Indonesia"],["it","Italiano"],["ja","日本語"],["ko","한국어"],["pt","Português"],["ru","Русский"],["tr","Türkçe"],["ur","اردو"],["zh-CN","中文"]];
+const PAGE = "https://2005n4ruto999-coder-github-io.translate.goog/flow-privacy/updates/?lang=en&_x_tr_sl=en&_x_tr_hl=en&_x_tr_tl=";
+const sw = document.getElementById("sw"), menu = document.getElementById("menu");
+menu.innerHTML = LANGS.map(([c, n]) =>
+  `<li><a href="${c === "en" || c === "ar" ? "?lang=" + c : PAGE + c}" data-l="${c}" lang="${c}">${n}</a></li>`).join("");
+menu.onclick = e => {
+  const l = e.target.closest("a")?.dataset.l;
+  if (l === "en" || l === "ar") { e.preventDefault(); render(lang = l); toggle(false); }
+};
+const toggle = open => { menu.hidden = !open; sw.setAttribute("aria-expanded", open); };
+sw.onclick = () => toggle(menu.hidden);
+document.addEventListener("click", e => { if (!e.target.closest(".lm")) toggle(false); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") toggle(false); });
+let lang = new URLSearchParams(location.search).get("lang") === "ar" ? "ar" : "en";
 render(lang);
 </script>
 </body>
